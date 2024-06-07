@@ -52,6 +52,27 @@ class ElasticFieldBuilderFnTest extends AnyWordSpec with Matchers {
       ElasticFieldBuilderFn.construct(field.name, JacksonSupport.mapper.readValue[Map[String, Any]](jsonString)) shouldBe field
     }
 
+    "support RniNameField" in {
+      val field = RniNameField("a",testEntityType = Some(true) )
+      val jsonString = """{"type":"rni_name","testEntityType":true}"""
+      ElasticFieldBuilderFn(field).string shouldBe jsonString
+      ElasticFieldBuilderFn.construct(field.name, JacksonSupport.mapper.readValue[Map[String, Any]](jsonString)) shouldBe field
+    }
+
+    "support RniDateField" in {
+      val field = RniDateField("a",testEntityType = Some(true) )
+      val jsonString = """{"type":"rni_date","testEntityType":true}"""
+      ElasticFieldBuilderFn(field).string shouldBe jsonString
+      ElasticFieldBuilderFn.construct(field.name, JacksonSupport.mapper.readValue[Map[String, Any]](jsonString)) shouldBe field
+    }
+
+    "support RniAddressField" in {
+      val field = RniAddressField("a",testEntityType = Some(true) )
+      val jsonString = """{"type":"rni_address","testEntityType":true}"""
+      ElasticFieldBuilderFn(field).string shouldBe jsonString
+      ElasticFieldBuilderFn.construct(field.name, JacksonSupport.mapper.readValue[Map[String, Any]](jsonString)) shouldBe field
+    }
+
     "support DateRangeField" in {
       val field = DateRangeField("time_range", format = Some("yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"))
       val jsonString = """{"type":"date_range","format":"yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"}"""

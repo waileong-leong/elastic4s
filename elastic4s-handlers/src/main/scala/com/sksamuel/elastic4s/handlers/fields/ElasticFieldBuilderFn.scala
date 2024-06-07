@@ -1,6 +1,6 @@
 package com.sksamuel.elastic4s.handlers.fields
 
-import com.sksamuel.elastic4s.fields.{AggregateMetricField, AliasField, AnnotatedTextField, BinaryField, BooleanField, CompletionField, ConstantKeywordField, DateField, DateNanosField, DenseVectorField, DynamicField, ElasticField, FlattenedField, GeoPointField, GeoShapeField, HistogramField, IcuCollationKeywordField, IpField, IpRangeField, JoinField, KeywordField, MatchOnlyTextField, Murmur3Field, NestedField, NumberField, ObjectField, PercolatorField, RangeField, RankFeatureField, RankFeaturesField, SearchAsYouTypeField, TextField, TokenCountField, VersionField, WildcardField}
+import com.sksamuel.elastic4s.fields.{AggregateMetricField, AliasField, AnnotatedTextField, BinaryField, BooleanField, CompletionField, ConstantKeywordField, DateField, DateNanosField, DenseVectorField, DynamicField, ElasticField, FlattenedField, GeoPointField, GeoShapeField, HistogramField, IcuCollationKeywordField, IpField, IpRangeField, JoinField, KeywordField, MatchOnlyTextField, Murmur3Field, NestedField, NumberField, ObjectField, PercolatorField, RangeField, RankFeatureField, RankFeaturesField, RniAddressField, RniDateField, RniNameField, SearchAsYouTypeField, TextField, TokenCountField, VersionField, WildcardField}
 import com.sksamuel.elastic4s.json.XContentBuilder
 
 object ElasticFieldBuilderFn {
@@ -41,6 +41,9 @@ object ElasticFieldBuilderFn {
       case f: TokenCountField => TokenCountFieldBuilderFn.build(f)
       case f: VersionField => VersionFieldBuilderFn.build(f)
       case f: WildcardField => WildcardFieldBuilderFn.build(f)
+      case f: RniNameField => RniNameFieldBuilderFn.build(f)
+      case f: RniAddressField => RniAddressFieldBuilderFn.build(f)
+      case f: RniDateField => RniDateFieldBuilderFn.build(f)
     }
   }
 
@@ -76,6 +79,9 @@ object ElasticFieldBuilderFn {
       case TokenCountField.`type` => TokenCountFieldBuilderFn.toField(name, values)
       case VersionField.`type` => VersionFieldBuilderFn.toField(name, values)
       case WildcardField.`type` => WildcardFieldBuilderFn.toField(name, values)
+      case RniNameField.`type` => RniNameFieldBuilderFn.toField(name, values)
+      case RniAddressField.`type` => RniAddressFieldBuilderFn.toField(name, values)
+      case RniDateField.`type` => RniDateFieldBuilderFn.toField(name, values)
       case rangeType: String if RangeFieldBuilderFn.supportedTypes.contains(rangeType) => RangeFieldBuilderFn.toField(rangeType, name, values)
       case numberType: String if NumberFieldBuilderFn.supportedTypes.contains(numberType) => NumberFieldBuilderFn.toField(numberType, name, values)
     }.orElse(values.get("properties").map(_ => ObjectFieldBuilderFn.toField(name, values))).getOrElse(throw new RuntimeException(s"Could not convert mapping for '$name' to an ElasticField"))
